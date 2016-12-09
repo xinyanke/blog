@@ -123,6 +123,7 @@ inout标识的参数称为输入输出参数，不能使用var或let标识。
 ### 无返回值函数
 有的函数只是为了处理某个过程，或者要返回的数据要通过inout类型参数传递出来，这时可以将函数设置为无返回值。所谓无返回值，事实上是void类型，即表示没有数据的类型。
 无返回值函数的语法格式有如下3种形式：
+
 ```
 //形式1：
 func 函数名(参数列表){
@@ -138,6 +139,7 @@ func 函数名(参数列表) ->(){
 func 函数名(参数列表) ->Void {
 	语句组
 }
+
 ```
 ### 多返回值函数
 
@@ -148,6 +150,7 @@ func 函数名(参数列表) ->Void {
 * 另一种是返回元组类型。
 
 元组类型返回多值实现方式：
+
 ```
 func pos(dt: Double, speed:(x:Int,y:Int)) -> (x:Int, y:Int) {
     let posx: Int = speed.x * Int(dt)
@@ -158,6 +161,7 @@ func pos(dt: Double, speed:(x:Int,y:Int)) -> (x:Int, y:Int) {
 
 let move = pos(dt: 60.0, speed:(10,-5))
 print("物体移动:\(move.x),\(move.y)") //物体移动:600,-300
+
 ```
 参数speed:(x:Int,y:Int) 是元组类型
 
@@ -169,6 +173,7 @@ print("物体移动:\(move.x),\(move.y)") //物体移动:600,-300
 可以把函数类型作为另一个函数的返回类型使用。
 
 示例代码：
+
 ```
 
 //计算 商品净利和毛利率  商品属性： 批发价和零售价
@@ -204,6 +209,7 @@ print("中华批发价格381.6,零售450,利润:\(zhonghua(381.6,450))")
 ### 作为参数类型使用
 
 把函数类型作为另一个函数的参数类型使用，示例代码如下：
+
 ```
 //计算 商品净利和毛利率  商品属性： 批发价和零售价
 //净利 = 零售价-批发价；毛利率 = (零售价-批发价)/零售价*100%
@@ -226,9 +232,42 @@ print("中华利润：\(zhonghua)") //输出结果：中华利润：68.4
 zhonghua = juanyan(shangpin: maolilv, pifa: 381.6, lingshou: 450)
 print("中华毛利:\(zhonghua)") //输出结果：中华毛利:15.2
 
-``` 
+```
+ 
 
 >## 嵌套函数
 
 把函数定义在另外的函数体中，称作“嵌套函数”
+默认情况下，嵌套函数的作用域在外函数体内，但我们可以定义外函数的返回值类型为嵌套函数类型，从而将嵌套函数传递给外函数，被其他调用者使用。
+示例代码如下：
+
+```
+func jsq(yunsuanfu: String)-> (Int,Int)->Int{
+    
+    func jia(a:Int,b:Int)->Int{
+        return a + b
+    }
+    func jian(a:Int,b:Int)->Int{
+        return a - b
+    }
+    var jisuan:(Int,Int)->Int
+    switch yunsuanfu {
+    case "+":
+        jisuan = jia
+    case "-":
+        jisuan = jian
+    default:
+        jisuan = jia
+    }
+    return jisuan
+    
+}
+let sz1:(Int,Int)->Int = jsq(yunsuanfu: "+")
+print(sz1(1,1))
+let sz2:(Int,Int)->Int = jsq(yunsuanfu: "-")
+print(sz2(1,1))
+```
+
+//最后更新于2016.12.09 HiTao
+(完)
 
